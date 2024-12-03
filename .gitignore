@@ -1,6 +1,18 @@
-.venv
+# Ignore virtual environment
+env/
+
+# Ignore system files
+*.DS_Store
+Thumbs.db
+
+# Ignore compiled Python files
+*.pyc
 __pycache__/
-instance/
-*.db
-celerybeat-schedule
-dump.rdb
+
+# Ignore log files
+*.log
+
+# Ignore IDE/project-specific files
+.vscode/
+.idea/
+*.iml
