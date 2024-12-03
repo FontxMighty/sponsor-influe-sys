@@ -106,12 +106,25 @@ router.beforeEach(async (to, from, next) => {
       if (!isLoggedIn) {
         next("/login");
       } else if (to.meta.requiredRole && to.meta.requiredRole !== userRole) {
-        next("/");
+        next("/"); // Or another page if the role does not match
       } else {
         next();
       }
     } else {
-      next();
+      // If the user is logged in, handle redirection based on role
+      if (isLoggedIn) {
+        if (userRole === "sponsor") {
+          next("/sponsor/dashboard"); // Redirect to sponsor dashboard
+        } else if (userRole === "influencer") {
+          next("/influencer/dashboard"); // Redirect to influencer dashboard
+        } else if (userRole === "admin") {
+          next("/admin/dashboard"); // Redirect to admin dashboard
+        } else {
+          next("/"); // Default fallback
+        }
+      } else {
+        next(); // Proceed to the route if not logged in
+      }
     }
   } catch (error) {
     console.error("Error in navigation guard:", error);

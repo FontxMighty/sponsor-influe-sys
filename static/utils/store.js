@@ -1,4 +1,5 @@
 Vue.use(Vuex);
+
 const store = new Vuex.Store({
   state: {
     loggedIn: false,
@@ -15,7 +16,9 @@ const store = new Vuex.Store({
       state.role = "";
     },
   },
+
   actions: {
+    // Check login status from the backend
     async checkLogin({ commit }) {
       try {
         const res = await fetch(window.location.origin + "/check_login");
@@ -25,14 +28,22 @@ const store = new Vuex.Store({
         } else {
           commit("logout");
         }
-      } catch {
-        commit("logout");
+      } catch (error) {
+        console.error("Error during login check:", error);
+        commit("logout");  // Logout in case of any error
       }
+    },
+
+    // Log out the user and reset the state
+    logoutUser({ commit }) {
+      commit("logout");
     },
   },
 
   getters: {
+    // Check if user is logged in
     isLoggedIn: (state) => state.loggedIn,
+    // Get user role (admin, sponsor, influencer)
     userRole: (state) => state.role,
   },
 });

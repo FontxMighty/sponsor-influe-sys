@@ -1,86 +1,86 @@
 const AdminUsers = {
     template: `
-      <div class="container mt-4">
-        <div v-if="flaggedUsers.length > 0" class="card mb-4">
-          <div class="card-header">
-            <h4>Flagged Users</h4>
+     <div class="container mt-4">
+    <div v-if="flaggedUsers.length > 0" class="card mb-4">
+      <div class="card-header" style="background-color: #f8d7da; color: #721c24;">
+        <h4>Flagged Users</h4>
+      </div>
+      <div class="card-body table-responsive">
+        <table class="table-responsive text-center rounded card-body">
+          <thead style="background-color: #f1f1f1; color: #495057;">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="user in flaggedUsers" :key="user.id" class="col-12">
+              <td>{{ user.id }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.role.toUpperCase() }}</td>
+              <td>
+                <button class="btn btn-warning" @click="userAction(user.id, 'unflag')" style="background-color: #ffc107; border-color: #ffc107;">Unflag</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h3 class="flex-grow-1">All Users</h3>
+          <button class="btn btn-outline-secondary" @click="resetUserSearch" style="border-color: #6c757d; color: #6c757d;">Clear Filter</button>
+        </div>
+        <div class="d-flex mb-3 row g-2">
+          <div class="form-floating col">
+            <input v-model="userSearchQuery" type="text" class="form-control" id="userSearch" placeholder="Search" style="border-color: #007bff;"/>
+            <label for="userSearch">Search users</label>
           </div>
-          <div class="card-body table-responsive">
-            <table class="table-responsive text-center rounded card-body">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="user in flaggedUsers" :key="user.id" class="col-12">
-                  <td>{{ user.id }}</td>
-                  <td>{{ user.name }}</td>
-                  <td>{{ user.email }}</td>
-                  <td>{{ user.role.toUpperCase() }}</td>
-                  <td>
-                    <button class="btn btn-warning" @click="userAction(user.id, 'unflag')">Unflag</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="form-floating col-3">
+            <select v-model="selectedRole" class="form-select" id="filterRoles" style="border-color: #007bff;">
+              <option value="">All</option>
+              <option value="influencer">Influencers</option>
+              <option value="sponsor">Sponsors</option>
+            </select>
+            <label for="filterRoles">Role</label>
           </div>
         </div>
-        
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <h3 class="flex-grow-1">All Users</h3>
-              <button class="btn btn-outline-secondary" @click="resetUserSearch">Clear Filter</button>
-            </div>
-            <div class="d-flex mb-3 row g-2">
-              <div class="form-floating col">
-                <input v-model="userSearchQuery" type="text" class="form-control" id="userSearch" placeholder="Search"/>
-                <label for="userSearch">Search users</label>
-              </div>
-              <div class="form-floating col-3">
-                <select v-model="selectedRole" class="form-select" id="filterRoles">
-                  <option value="">All</option>
-                  <option value="influencer">Influencers</option>
-                  <option value="sponsor">Sponsors</option>
-                </select>
-                <label for="filterRoles">Role</label>
-              </div>
-            </div>
-            <div class="table-responsive">
-              <table v-if="filteredUsers.length > 0" class="text-center rounded card-body">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Campaigns</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="user in filteredUsers" :key="user.id" class="col-12">
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.role.toUpperCase() }}</td>
-                    <td>{{ user.campaigns }}</td>
-                    <td>
-                      <button class="btn btn-danger" @click="userAction(user.id, 'flag')">Flag</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div v-else class="card-body fw-bold">No Users Found...</div>
-            </div>
-          </div>
+        <div class="table-responsive">
+          <table v-if="filteredUsers.length > 0" class="text-center rounded card-body">
+            <thead style="background-color: #007bff; color: #fff;">
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Campaigns</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user in filteredUsers" :key="user.id" class="col-12">
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role.toUpperCase() }}</td>
+                <td>{{ user.campaigns }}</td>
+                <td>
+                  <button class="btn btn-danger" @click="userAction(user.id, 'flag')" style="background-color: #dc3545; border-color: #dc3545;">Flag</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div v-else class="card-body fw-bold">No Users Found...</div>
         </div>
       </div>
+    </div>
+  </div>
     `,
     data() {
       return {

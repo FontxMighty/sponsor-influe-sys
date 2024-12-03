@@ -74,7 +74,6 @@ def monthly_report(time):
             campaign_dict=campaign_dict,influencer_dict=influencer_dict, bg_img=bg_img
         )
 
-        # Save the HTML report to a file
         report_path = f'downloads/monthly_report_{sponsor.id}.html'
         with open(report_path, 'w') as file:
             file.write(html)

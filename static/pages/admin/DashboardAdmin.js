@@ -1,94 +1,89 @@
 const DashboardAdmin = {
   template: `
-  <div class="container mt-4">
-    <div class="row">
-      <!-- Users Card -->
-      <div class="col-md-4 mb-2">
-        <div class="card shadow-sm ">
-          <div class="card-header d-flex align-items-center text-body">
-            <i class="bi bi-people-fill me-2"></i>
-            <span class="h4"> {{ totalUsers }} Users</span>
-          </div>
-          <div class="card-body">
-            <p class="h5 text-success"><i class="bi bi-person-vcard-fill"></i> Sponsors: {{ totalSponsors }}</p>
-            <p class="h5 text-success"><i class="bi bi-person-badge"></i> Influencers: {{ totalInfluencers }}</p>
-            <p class="h5 text-danger"><i class="bi bi-person-exclamation"></i> Flagged: {{ flaggedUsers }}</p>
-          </div>
-          <div class="card-footer text-muted">
-            <small>Last updated: {{ new Date().toLocaleString() }}</small>
-          </div>
+<div class="container mt-4">
+  <div class="row">
+    <!-- Users Card -->
+    <div class="col-md-4 mb-2">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+          <i class="bi bi-people-fill me-2"></i>
+          <span class="h4"> {{ totalUsers }} Users</span>
         </div>
-      </div>
-
-      <!-- Campaigns Card -->
-      <div class="col-md-4 mb-2">
-        <div class="card shadow-sm">
-          <div class="card-header d-flex align-items-center text-body">
-            <i class="bi bi-bullseye me-2"></i>
-            <span class="h4">{{ totalCampaigns }} Campaigns</span>
-          </div>
-          <div class="card-body">
-            <p class="h5 text-success"><i class="bi bi-eye-fill"></i> Public: {{ publicCampaigns }}</p>
-            <p class="h5 text-secondary"><i class="bi bi-incognito"></i> Private: {{ privateCampaigns }}</p>
-            <p class="h5 text-danger"><i class="bi bi-ban"></i> Flagged: {{ flaggedCampaigns }}</p>
-          </div>
-          <div class="card-footer text-muted">
-            <small>Last updated: {{ new Date().toLocaleString() }}</small>
-          </div>
+        <div class="card-body">
+          <p class="h5 text-success"><i class="bi bi-person-vcard-fill"></i> Sponsors: {{ totalSponsors }}</p>
+          <p class="h5 text-success"><i class="bi bi-person-badge"></i> Influencers: {{ totalInfluencers }}</p>
+          <p class="h5 text-danger"><i class="bi bi-person-exclamation"></i> Flagged: {{ flaggedUsers }}</p>
         </div>
-      </div>
-
-      <!-- Ad Requests Card -->
-      <div class="col-md-4 mb-2">
-        <div class="card shadow-sm ">
-          <div class="card-header d-flex align-items-center text-body">
-            <i class="bi bi-envelope-open me-2"></i>
-            <span class="h4">{{ totalAdRequests }} Ad Requests</span>
-          </div>
-          <div class="card-body">
-            <p class="h5 text-success"><i class="bi bi-envelope-check-fill"></i> Accepted: {{ acceptedAdRequests }}</p>
-            <p class="h5 text-secondary"><i class="bi bi-envelope-exclamation-fill"></i> Pending: {{ pendingAdRequests }}</p>
-            <p class="h5 text-danger"><i class="bi bi-envelope-slash"></i> Rejected: {{ rejectedAdRequests }}</p>
-          </div>
-          <div class="card-footer text-muted">
-            <small>Last updated: {{ new Date().toLocaleString() }}</small>
-          </div>
+        <div class="card-footer bg-light text-muted">
+          <small>Last updated: {{ new Date().toLocaleString() }}</small>
         </div>
       </div>
     </div>
 
-    <!-- Pending Requests Table -->
-    <div class="card table-responsive mt-2">
-      <p class="card-header h4">Pending Requests</p>
-      <table v-if="pendingSponsors.length > 0" class="text-center rounded card-body">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <!--<th>Company</th>
-            <th>Industry</th>
-            <th>Budget</th>-->
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="sponsor in pendingSponsors" :key="sponsor.id" class="col-12">
-            <td>{{ sponsor.id }}</td>
-            <td>{{ sponsor.name }}</td>
-            <td>{{ sponsor.email }}</td>
-            <!--<td>{{ sponsor.sponsor_data?.company_name }}</td>
-            <td>{{ sponsor.sponsor_data?.industry }}</td>
-            <td>{{ sponsor.sponsor_data?.budget }}</td>-->
-            <td>
-              <button class="btn btn-success" @click="approveSponsor(sponsor.id)">Approve</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div v-else class="card-body fw-bold">No Pending Requests...</div>
+    <!-- Campaigns Card -->
+    <div class="col-md-4 mb-2">
+      <div class="card shadow-sm">
+        <div class="card-header bg-success text-white d-flex align-items-center">
+          <i class="bi bi-bullseye me-2"></i>
+          <span class="h4">{{ totalCampaigns }} Campaigns</span>
+        </div>
+        <div class="card-body">
+          <p class="h5 text-primary"><i class="bi bi-eye-fill"></i> Public: {{ publicCampaigns }}</p>
+          <p class="h5 text-secondary"><i class="bi bi-incognito"></i> Private: {{ privateCampaigns }}</p>
+          <p class="h5 text-danger"><i class="bi bi-ban"></i> Flagged: {{ flaggedCampaigns }}</p>
+        </div>
+        <div class="card-footer bg-light text-muted">
+          <small>Last updated: {{ new Date().toLocaleString() }}</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ad Requests Card -->
+    <div class="col-md-4 mb-2">
+      <div class="card shadow-sm">
+        <div class="card-header bg-warning text-white d-flex align-items-center">
+          <i class="bi bi-envelope-open me-2"></i>
+          <span class="h4">{{ totalAdRequests }} Ad Requests</span>
+        </div>
+        <div class="card-body">
+          <p class="h5 text-success"><i class="bi bi-envelope-check-fill"></i> Accepted: {{ acceptedAdRequests }}</p>
+          <p class="h5 text-secondary"><i class="bi bi-envelope-exclamation-fill"></i> Pending: {{ pendingAdRequests }}</p>
+          <p class="h5 text-danger"><i class="bi bi-envelope-slash"></i> Rejected: {{ rejectedAdRequests }}</p>
+        </div>
+        <div class="card-footer bg-light text-muted">
+          <small>Last updated: {{ new Date().toLocaleString() }}</small>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Pending Requests Table -->
+  <div class="card table-responsive mt-2">
+    <p class="card-header h4 bg-secondary text-white">Pending Requests</p>
+    <table v-if="pendingSponsors.length > 0" class="text-center table table-striped rounded card-body">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="sponsor in pendingSponsors" :key="sponsor.id" class="col-12">
+          <td>{{ sponsor.id }}</td>
+          <td>{{ sponsor.name }}</td>
+          <td>{{ sponsor.email }}</td>
+          <td>
+            <button class="btn btn-success" @click="approveSponsor(sponsor.id)">Approve</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div v-else class="card-body fw-bold text-danger">No Pending Requests...</div>
+  </div>
+</div>
+
   `,
   data() {
     return {

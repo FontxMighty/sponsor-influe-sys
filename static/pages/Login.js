@@ -3,17 +3,11 @@ import store from "../utils/store.js";
 
 const Login = {
   template: `
-  <div class="container mt-5" style="max-width:500px;">
+  <div class="container mt-6" style="max-width:490px;">
         <div class="row">
             <div class="col-md-12">             
-                <div class="card login-form shadow-lg">
-                    <div class="card-header text-center fw-bold">
-                      <!-- <div v-if="message" class="alert alert-success">
-                        <i class="bi bi-check-circle"></i> {{ message }}
-                      </div>
-                      <div v-if="error" class="alert alert-danger">
-                        <i class="bi bi-exclamation-circle"></i> {{ error }}
-                      </div> -->
+                <div class="card login-form shadow-lg" style="background-color: #f8f9fa;">
+                    <div class="card-header text-center fw-bold" style="background-color: #007bff; color: white;">
                       Login
                     </div>
                     <div class="card-body">
@@ -29,22 +23,21 @@ const Login = {
                                     <input v-model="password" :type="showPassword ? 'text' : 'password'" class="form-control" id="password" placeholder="Enter Password" name="password" required>
                                     <label for="password">Password</label>
                                   </div>
-                                  <span class="input-group-text" @click="togglePasswordVisibility">
+                                  <span class="input-group-text" @click="togglePasswordVisibility" style="background-color: #007bff; color: white; cursor: pointer;">
                                     <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye-fill'"></i>
                                   </span>
                                 </div>
-                                <button type="submit" class="btn btn-success w-100 mt-3" @click="submitInfo">Login</button>
+                                <button type="submit" class="btn btn-success w-100 mt-3" @click="submitInfo" style="background-color: #28a745; border-color: #28a745;">Login</button>
                             </div>
                         </form>
                         <div class="mt-2 text-center">
-                            Don't have an account? <a href="/#/signup">Sign up</a>
+                            Don't have an account? <a href="/#/signup" style="color: #007bff; text-decoration: none;">Sign up</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
   `,
   data() {
     return {
@@ -70,6 +63,7 @@ const Login = {
         const data = await res.json();
         if (res.ok) {
           store.commit("setLogIn", data.role);
+
           if (router.currentRoute.path !== "/") {
             router.push("/");
           }

@@ -9,5 +9,5 @@ VISIBILITY_TYPES = ('public', 'private')
 REQUEST_STATUS = ('pending', 'accepted', 'rejected', 'negotiating')
 LOGIN_INACTIVITY_HOURS = 24
 DISCORD_WEBHOOK_URL = ""
-SENDER_EMAIL_MAIL = "youremail@gmail.com"
-SENDER_EMAIL_PASSWORD = "" #App password, will be generated after enabling 2FA
+SENDER_EMAIL_MAIL = "sonishakti028@gmail.com"
+SENDER_EMAIL_PASSWORD = "hpmr piff qzhx ggnh"

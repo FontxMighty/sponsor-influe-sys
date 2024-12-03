@@ -19,11 +19,11 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary = 'user_roles', backref='users')
     campaigns = db.relationship('Campaign', backref='user', cascade='all, delete-orphan')
 
-    # Relationship to extend user-specific data
+   
     sponsor_data = db.relationship('SponsorData', uselist=False, backref='user', cascade='all, delete-orphan')
     influencer_data = db.relationship('InfluencerData', uselist=False, backref='user', cascade='all, delete-orphan')
 
-    #Taken care by flask-security
+    
     fs_uniquifier = db.Column(db.String, nullable=False)
     last_login_at = db.Column(db.DateTime, default=dt.now(), onupdate=dt.now())
     current_login_at = db.Column(db.DateTime, default=dt.now(), onupdate=dt.now())
@@ -31,13 +31,13 @@ class User(db.Model, UserMixin):
     login_count = db.Column(db.Integer, default=0)
 
     def __init__(self, email, password, name, active=None, sponsor_data=None, influencer_data=None, fs_uniquifier=None, roles=None):
-        self.email=email
-        self.password = password
         self.name = name
         self.active=active
         self.fs_uniquifier = fs_uniquifier
         self.roles = roles
-        
+        self.email=email
+        self.password = password
+         
         if roles and roles[0].name == 'sponsor':
             self.sponsor_data = sponsor_data or SponsorData(company_name="", industry="", budget=0, user=self)
         elif roles and roles[0].name == 'influencer':
@@ -74,15 +74,15 @@ class Campaign(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.Text)
+    budget = db.Column(db.Float)
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
-    budget = db.Column(db.Float)
     visibility = db.Column(db.Enum(*VISIBILITY_TYPES, name='visibility_types'), default='private', nullable=False)
     goals =  db.Column(db.Text)
     flagged = db.Column(db.Boolean, default=False)
+    ad_requests = db.relationship('AdRequest', backref='campaign', cascade='all, delete-orphan')
     created_at = db.Column(db.DateTime, nullable=False, default=dt.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=dt.now(), onupdate=dt.now())
-    ad_requests = db.relationship('AdRequest', backref='campaign', cascade='all, delete-orphan')
 
     def to_dict(self):
         return {
@@ -101,12 +101,12 @@ class Campaign(db.Model):
 class AdRequest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     campaign_id  = db.Column(db.Integer, db.ForeignKey('campaign.id'), nullable=False)
-    user_id  = db.Column(db.Integer, db.ForeignKey('user.id')) #Influencer ID
+    user_id  = db.Column(db.Integer, db.ForeignKey('user.id')) 
     messages = db.Column(db.String)
     requirements = db.Column(db.String)
     payment_amount = db.Column(db.Float)
-    revised_payment_amount = db.Column(db.Float)  # To track negotiation changes
-    negotiation_notes = db.Column(db.Text, default="")  # To keep track of every change
+    revised_payment_amount = db.Column(db.Float)  
+    negotiation_notes = db.Column(db.Text, default="") 
     status= db.Column(db.Enum(*REQUEST_STATUS, name='request_status'), default='pending', nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=dt.now())
     updated_at = db.Column(db.DateTime, nullable=False, default=dt.now(), onupdate=dt.now())
@@ -117,10 +117,10 @@ class AdRequest(db.Model):
             'campaign_id': self.campaign_id,
             'user_id': self.user_id,
             'messages': self.messages,
-            'requirements': self.requirements,
-            'payment_amount': self.payment_amount,
+             'payment_amount': self.payment_amount,
             'revised_payment_amount': self.revised_payment_amount,
             'negotiation_notes': self.negotiation_notes,
+            'requirements': self.requirements,
             'status': self.status
         }
 

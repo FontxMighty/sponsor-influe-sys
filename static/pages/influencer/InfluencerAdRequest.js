@@ -1,53 +1,55 @@
 import Campaign from "../../components/Campaign.js";
 import router from "../../utils/router.js";
+
 const InfluencerAdRequest = {
   template: `
-    <div>
-        <div class="container mt-4" v-if="adRequest && campaign">
-          <div class="d-flex flex-wrap">
-            <div class="col-12 ">
-              <campaign :campaign="campaign" @delete="goBack" header="Campaign Details" class="card"></campaign>
+  <div>
+    <div class="container mt-4" v-if="adRequest && campaign">
+      <div class="d-flex flex-wrap">
+        <div class="col-12">
+          <campaign :campaign="campaign" @delete="goBack" header="Campaign Details" class="card"></campaign>
+        </div>
+      </div>
+      <div class="card rounded shadow mt-2">
+        <h5 class="card-header bg-dark text-light">Ad Request Details</h5>
+        <div class="card-body">
+          <div>
+            <div class="mb-3">
+              <p><strong>Messages:</strong> {{ adRequest.messages }}</p>
+              <p><strong>Requirements:</strong> {{ adRequest.requirements }}</p>
+              <p><strong>Payment Amount:</strong> {{ adRequest.payment_amount }}</p>
+              <p><strong>Status:</strong> <span class="text-success">{{ adRequest.status }}</span></p>
+              <h4 class="text-muted">Notes</h4>
+              <div class="mb-3">
+                <textarea v-model="adRequest.negotiation_notes" class="form-control" rows="10" placeholder="Add negotiation notes" disabled></textarea>
+              </div>
+              <p><strong>Revised Payment Amount:</strong> {{ adRequest.revised_payment_amount }}</p>
             </div>
-          </div>
-          <div class="card rounded shadow mt-2">
-            <h5 class="card-header">Ad Request Details</h5>
-            <div class="card-body">
-                <div>
-                  <div class="mb-3">
-                      <p><strong>Messages:</strong> {{ adRequest.messages }}</p>
-                      <p><strong>Requirements:</strong> {{ adRequest.requirements }}</p>
-                      <p><strong>Payment Amount:</strong> {{ adRequest.payment_amount }}</p>
-                      <p><strong>Status:</strong> {{ adRequest.status }}</p>
-                      <h4>Notes</h4>
-                      <div class="mb-3">
-                        <textarea v-model="adRequest.negotiation_notes" class="form-control" rows="10" placeholder="Add negotiation notes" disabled></textarea>
-                      </div>
-                      <p><strong>Revised Payment Amount:</strong> {{ adRequest.revised_payment_amount }}</p>
-                  </div>
 
-                  <div v-if="adRequest.status === 'negotiating'" class="mt-4">
-                      <h4>Message</h4>
-                      <div class="mb-3">
-                        <textarea v-model="negotiationNotes" class="form-control" rows="3" placeholder="Add message"></textarea>
-                      </div>
-                      <div class="mb-3">
-                        <input v-model="revisedPaymentAmount" type="number" class="form-control" placeholder="Revised Payment Amount" />
-                      </div>
-                  </div>
-                  <template v-if="adRequest.user_id === 0 || adRequest.user_id == null">
-                    <button v-if="adRequest.status === 'pending'"  @click="updateStatus('accepted')" class="btn btn-success me-2 w-25">Join Ad Request</button>
-                  </template>
-                  <template v-else>
-                    <button v-if="adRequest.status === 'negotiating'" @click="updateStatus('negotiating')" class="btn btn-success me-2 w-25">Update Negotiation</button> 
-                    <button v-if="['pending', 'negotiating'].includes(adRequest.status)"  @click="updateStatus('accepted')" class="btn btn-success me-2 w-25">Accept Ad Request</button>
-                    <button v-if="['pending', 'negotiating'].includes(adRequest.status)"  @click="updateStatus('rejected')" class="btn btn-danger me-2 w-25">Reject Ad Request</button>
-                    <button v-if="adRequest.status === 'pending'" @click="updateStatus('negotiating')" class="btn btn-warning me-2 w-25">Start Negotiation</button> 
-                  </template>
-                </div>
+            <div v-if="adRequest.status === 'negotiating'" class="mt-4">
+              <h4 class="text-primary">Message</h4>
+              <div class="mb-3">
+                <textarea v-model="negotiationNotes" class="form-control" rows="3" placeholder="Add message"></textarea>
+              </div>
+              <div class="mb-3">
+                <input v-model="revisedPaymentAmount" type="number" class="form-control" placeholder="Revised Payment Amount" />
+              </div>
             </div>
+
+            <template v-if="adRequest.user_id === 0 || adRequest.user_id == null">
+              <button v-if="adRequest.status === 'pending'" @click="updateStatus('accepted')" class="btn btn-success me-2 w-25">Join Ad Request</button>
+            </template>
+            <template v-else>
+              <button v-if="adRequest.status === 'negotiating'" @click="updateStatus('negotiating')" class="btn btn-warning me-2 w-25">Update Negotiation</button>
+              <button v-if="['pending', 'negotiating'].includes(adRequest.status)" @click="updateStatus('accepted')" class="btn btn-success me-2 w-25">Accept Ad Request</button>
+              <button v-if="['pending', 'negotiating'].includes(adRequest.status)" @click="updateStatus('rejected')" class="btn btn-danger me-2 w-25">Reject Ad Request</button>
+              <button v-if="adRequest.status === 'pending'" @click="updateStatus('negotiating')" class="btn btn-info me-2 w-25">Start Negotiation</button>
+            </template>
           </div>
         </div>
+      </div>
     </div>
+  </div>
   `,
   data() {
     return {

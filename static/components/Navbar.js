@@ -5,9 +5,10 @@ const Navbar = {
       <!-- fixed-top -->
       <nav class="navbar navbar-expand-lg shadow rounded m-2 p-2">
         <div class="container-fluid">
-          <a class="navbar-brand" href="/">
-            <img src="/static/logo.png" alt="InSync Logo"  height="50" class="d-inline-block align-text-top">
-          </a>
+         <a class="navbar-brand" href="/">
+  <img src="/static/logo.png" alt="InSync Logo" height="50" width="80" class="d-inline-block align-text-top rounded-3">
+</a>
+
           <button class="navbar-toggler"
             type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -17,12 +18,15 @@ const Navbar = {
             <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
             <ul class="navbar-nav mb-2 mb-lg-0">
               <template v-if="!isLoggedIn">
-                <li class="nav-item">
-                  <router-link to="/login" class="nav-link">Login</router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/signup" class="nav-link">Sign Up</router-link>
-                </li>
+             <li class="nav-item">
+              <router-link to="/login" style="background-color: #3a3a40; color: white;" class="nav-link rounded me-2">Login</router-link>
+             </li>
+             <li class="nav-item">
+               <router-link to="/signup" style="background-color: #a4cba3; color: white;" class="nav-link rounded">Sign Up</router-link>
+             </li>
+
+
+
               </template>
               <template v-if="userRole === 'sponsor'">
                 <li class="nav-item">

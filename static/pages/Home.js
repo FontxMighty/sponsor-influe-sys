@@ -4,7 +4,13 @@ import router from "../utils/router.js";
 const Home = {
   template: `
   <div class="container">
-    <h2 v-if="!isLoggedIn">Please Login to view the masala-e-magic</h2>
+<h2 
+  v-if="!isLoggedIn" 
+  class="mr-50 text-center" 
+  style="color: #111111; margin-top: 250px;">
+  Login to view influencer and sponsorship
+</h2>
+
     <div v-if="isLoggedIn">
       <div  class="card rounded shadow mt-4 mb-2">
         <div class="card-body">

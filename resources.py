@@ -34,7 +34,7 @@ class CampaignResource(Resource):
 
     @auth_required()
     @marshal_with(campaign_fields)
-    # @cache.cached(timeout=1, query_string=True)
+
     def get(self, campaign_id=None):
         if current_user.has_role('sponsor'):
             if campaign_id is None:
@@ -92,7 +92,7 @@ class CampaignResource(Resource):
         
         for key, value in args.items():
             if value is not None:
-                # Convert date fields to date objects
+                
                 if key in ['start_date', 'end_date'] and isinstance(value, str):
                     try:
                         value = datetime.strptime(value, '%Y-%m-%d').date()
@@ -122,20 +122,20 @@ class AdRequestResource(Resource):
         'campaign_id': fields.Integer,
         'user_id': fields.Integer,
         'messages': fields.String,
-        'requirements': fields.String,
         'payment_amount': fields.Float,
         'revised_payment_amount': fields.Float,
         'negotiation_notes': fields.String,
+        'requirements': fields.String,
         'status': fields.String
     }
 
     parser.add_argument('campaign_id', type=int)
     parser.add_argument('user_id', type=int)
-    parser.add_argument('messages', type=str)
     parser.add_argument('requirements', type=str)
     parser.add_argument('payment_amount', type=float)
     parser.add_argument('revised_payment_amount', type=float)
     parser.add_argument('negotiation_notes', type=str)
+    parser.add_argument('messages', type=str)
     parser.add_argument('status', type=str)
 
     @auth_required()
@@ -147,18 +147,17 @@ class AdRequestResource(Resource):
                     ad_requests = AdRequest.query.filter_by(campaign_id=campaign_id).all()
                     print(ad_requests)
                     return [ad_request.to_dict() for ad_request in ad_requests]
-                return {'error': 'Campaign not found or not authorized'}, 404
+                return {'error': 'Cant find any compaign or not authorized'}, 404
             
             if ad_request_id is None:
-                # campaign_ids = [campaign.id for campaign in current_user.campaigns]
-                # ad_requests = AdRequest.query.filter(AdRequest.campaign_id.in_(campaign_ids)).all()
+              
                 ad_requests = AdRequest.query.join(Campaign).filter(Campaign.user_id == current_user.id, Campaign.flagged==False).all()
                 return [ad_request.to_dict() for ad_request in ad_requests]
             else:
                 ad_request = AdRequest.query.join(Campaign).filter(Campaign.user_id == current_user.id, 
                                                 AdRequest.id == ad_request_id, Campaign.flagged==False).first()
                 if not ad_request:
-                    return {'error': 'Ad request not found or not authorized'}, 404
+                    return {'error': 'There is not any ad request or not authorized'}, 404
                 return ad_request.to_dict()
         else:  # Influencer
             if campaign_id:
@@ -169,20 +168,20 @@ class AdRequestResource(Resource):
                                                             or_(AdRequest.user_id == 0,AdRequest.user_id.is_(None))).first()
                      
                     if not ad_request:
-                        return {'error': 'Ad request not found or not authorized'}, 404
+                        return {'error': 'There is not any ad request or not authorized'}, 404
                     
                     return ad_request.to_dict()
-                return {'error': 'Ad request not found or not authorized'}, 404
+                return {'error': 'There is not any ad request or not authorized'}, 404
             
             if ad_request_id is None:
                 ad_requests = AdRequest.query.filter_by(user_id=current_user.id).all()
                 return [ad_request.to_dict() for ad_request in ad_requests]
             else:
-                # ad_request = AdRequest.query.filter_by(user_id=current_user.id, id=ad_request_id).first()
+
                 ad_request = AdRequest.query.filter(AdRequest.id==ad_request_id,
                                                     or_(AdRequest.user_id == 0,AdRequest.user_id == current_user.id,AdRequest.user_id.is_(None))).first()
                 if not ad_request:
-                    return {'error': 'Ad request not found or not authorized'}, 404
+                    return {'error': 'There is not any ad request or not authorized'}, 404
                 return ad_request.to_dict()
 
     @auth_required()
@@ -296,7 +295,7 @@ class UserResource(Resource):
     parser.add_argument('influencer_data', type=dict, location='json')
 
     @auth_required()
-    # @cache.cached(timeout=10, query_string=True)
+    
     def get(self, user_id=None, all=""):
         if not current_user.is_authenticated:
             return {'error': 'Please login first'}, 401
@@ -314,7 +313,7 @@ class UserResource(Resource):
                 return {'error': 'Influencer not found'}, 404
             return user.to_dict()
 
-        # if user_id is None:
+    
         user = User.query.get(current_user.id)
             
         if not user:
